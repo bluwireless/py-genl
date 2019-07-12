@@ -1,0 +1,24 @@
+{
+    "_meta": {
+        "hash": {
+            "sha256": "bc7c45ac186d8db8bebec45a85671e84e633e03c0ac1745857511352b64cb11a"
+        },
+        "pipfile-spec": 6,
+        "requires": {
+            "python_version": "3.6"
+        },
+        "sources": [
+            {
+                "name": "pypi",
+                "url": "https://pypi.org/simple",
+                "verify_ssl": true
+            }
+        ]
+    },
+    "default": {
+        "a571e24": {
+            "path": "./py-genl"
+        }
+    },
+    "develop": {}
+}

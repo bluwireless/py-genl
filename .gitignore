@@ -1,0 +1,7 @@
+.eggs/
+bwt_uapi.h
+*.egg-info
+.tox/
+build/
+**/__pycache__/
+*.pyc
