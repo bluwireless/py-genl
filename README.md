@@ -27,11 +27,5 @@ Works on both Python 2 and 3.
 - It would make sense for this library to help you build and parse multi-part
   Netlink messages, but it doesn't.
 
-- The library niftily maps between full-length attribute names and short Python
-  names (e.g. `msg["NL80211_ATTR_IFINDEX"]` can be rewritten as
-  `msg.ifindex`). But this doesn't work fully for nested attributes,
-  e.g. `msg["NL80211_ATTR_KEY"]["NL80211_KEY_DEFAULT"]` cannot be rewritten as
-  `msg.key.default`.
-
 - No HTML documentation. There are docstrings in the code, though. The most
   interesting bit is `nlattr.NlAttrSchema`.

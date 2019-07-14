@@ -214,9 +214,7 @@ class TestNl80211(TestCase):
         self.assertEqual(attrs.vendor_subcmd, 3)
         self.assertEqual(attrs.wdev, 4)
         self.assertEqual(attrs.sta_supported_rates, [5, 6, 7])
-        self.assertEqual(attrs.iftype_ext_capa, [
-            {"NL80211_ATTR_IFTYPE": 8, "NL80211_ATTR_EXT_CAPA": b"\x09"},
-            {"NL80211_ATTR_IFTYPE": 10, "NL80211_ATTR_EXT_CAPA": b"\x0b"},
-        ])
-        self.assertEqual(attrs.key,
-                         {"NL80211_KEY_DEFAULT": 12, "NL80211_KEY_IDX": 13})
+        self.assertEqual(attrs.iftype_ext_capa[0].iftype, 8)
+        self.assertEqual(attrs.iftype_ext_capa[0].ext_capa, b"\x09")
+        self.assertEqual(attrs.key.default, 12)
+        self.assertEqual(attrs.key.idx, 13)
