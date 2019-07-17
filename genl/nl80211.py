@@ -16,6 +16,7 @@ from . import NlAttrSchema
 
 
 nl80211_constants = {
+    "NL80211_CMD_GET_WIPHY": 1,
     "NL80211_CMD_GET_INTERFACE": 5,
     "NL80211_ATTR_WIPHY": 1,
     "NL80211_ATTR_WIPHY_NAME": 2,
@@ -304,6 +305,18 @@ nl80211_constants = {
     "NL80211_KEY_DEFAULT_MGMT": 6,
     "NL80211_KEY_TYPE": 7,
     "NL80211_KEY_DEFAULT_TYPES": 8,
+
+    "NL80211_IFACE_COMB_LIMITS": 1,
+    "NL80211_IFACE_COMB_MAXNUM": 2,
+    "NL80211_IFACE_COMB_STA_AP_BI_MATCH": 3,
+    "NL80211_IFACE_COMB_NUM_CHANNELS": 4,
+    "NL80211_IFACE_COMB_RADAR_DETECT_WIDTHS": 5,
+    "NL80211_IFACE_COMB_RADAR_DETECT_REGIONS": 6,
+    "NL80211_IFACE_COMB_BI_MIN_GCD": 7,
+
+
+    "NL80211_IFACE_LIMIT_MAX": 1,
+    "NL80211_IFACE_LIMIT_TYPES": 2,
 }
 globals().update(nl80211_constants)
 
@@ -374,6 +387,10 @@ nl80211_spec = [
         "type": "u64",
     },
     {
+        "name": "NL80211_ATTR_WIPHY_NAME",
+        "type": "str",
+    },
+    {
         "name": "NL80211_ATTR_SSID",
         "type": "str",
     },
@@ -384,6 +401,16 @@ nl80211_spec = [
     {
         "name": "NL80211_ATTR_NOACK_MAP",
         "type": "u16",
+    },
+    {
+        "name": "NL80211_ATTR_CIPHER_SUITES",
+        "type": "array",
+        "subelem_type": "u32",
+    },
+    {
+        "name": "NL80211_ATTR_SUPPORTED_COMMANDS",
+        "type": "list",
+        "subelem_type": "u32",
     },
     {
         "name": "NL80211_ATTR_STA_SUPPORTED_RATES",
