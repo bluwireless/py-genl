@@ -49,7 +49,13 @@ class NlAttrSet(Mapping):
                 name, list(self.name_mapping.keys())))
 
 
-class NlAttrSchema(object):
+class NlAttrSchemaBase(object):
+    @classmethod
+    def from_spec(cls, spec, ids):
+        return cls()
+
+
+class NlAttrSchema(NlAttrSchemaBase):
     """
     Schema for a set of netlink attributes
 
@@ -284,7 +290,7 @@ int_type_to_fmt = {
 
 
 @schema_class
-class NlAttrSchemaInt(object):
+class NlAttrSchemaInt(NlAttrSchemaBase):
     """Schema for a single integer attribute"""
     names = int_type_to_fmt.keys()
 
@@ -304,16 +310,12 @@ class NlAttrSchemaInt(object):
 
 
 @schema_class
-class NlAttrSchemaStr(object):
+class NlAttrSchemaStr(NlAttrSchemaBase):
     """Schema for a string attribute"""
     names = ["str"]
 
     def build(self, val):
         return val.encode("ascii") + b'\0'
-
-    @classmethod
-    def from_spec(cls, spec, ids):
-        return cls()
 
     def parse(self, data):
         s = data.decode()
@@ -324,22 +326,18 @@ class NlAttrSchemaStr(object):
 
 
 @schema_class
-class NlAttrSchemaBytes(object):
+class NlAttrSchemaBytes(NlAttrSchemaBase):
     """Schema for an attribute that's just a byte blob"""
     names = ["bytes"]
 
     def build(self, data):
         return bytes(data)
 
-    @classmethod
-    def from_spec(cls, spec, ids):
-        return cls()
-
     def parse(self, data):
         return data
 
 
-class NlAttrSchemaCollection(object):
+class NlAttrSchemaCollection(NlAttrSchemaBase):
     """Helper class for list and array schemata"""
     @classmethod
     def from_spec(cls, spec, ids):
