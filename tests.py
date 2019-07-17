@@ -49,7 +49,7 @@ def nla_u64(attrib_id, data):
 
 
 def nla_u32(attrib_id, data):
-    return _nla("@HHI", attrib_id, data)
+    return _nla("=HHI", attrib_id, data)
 
 
 def nla(attrib_id, data):
