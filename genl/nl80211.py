@@ -440,7 +440,7 @@ nl80211_spec = [
         "type": [
             {
                 "name": "NL80211_KEY_DEFAULT",
-                "type": "u8",
+                "type": "flag",
             },
             {
                 "name": "NL80211_KEY_IDX",

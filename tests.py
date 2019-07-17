@@ -22,6 +22,7 @@ from genl.nl80211 import (nl80211_schema,
                           NL80211_ATTR_IFTYPE_EXT_CAPA, NL80211_ATTR_IFTYPE,
                           NL80211_ATTR_EXT_CAPA, NL80211_ATTR_KEY,
                           NL80211_KEY_DEFAULT, NL80211_KEY_IDX)
+from genl.nlattr import NlAttrSchema
 
 
 # Helpers for creating Netlink attributes of various types
@@ -50,6 +51,11 @@ def nla_u64(attrib_id, data):
 
 def nla_u32(attrib_id, data):
     return _nla("=HHI", attrib_id, data)
+
+
+def nla_flag(attrib_id):
+    fmt = "=HH"
+    return struct.pack(fmt, struct.calcsize(fmt), attrib_id)
 
 
 def nla(attrib_id, data):
@@ -151,7 +157,7 @@ class TestNl80211(TestCase):
                 nla_u32(NL80211_ATTR_IFTYPE, 10) +
                 nla(NL80211_ATTR_EXT_CAPA, b"\x0b"))) +
         nla(NL80211_ATTR_KEY,
-            nla_u8(NL80211_KEY_DEFAULT, 12) +
+            nla_flag(NL80211_KEY_DEFAULT) +
             nla_u8(NL80211_KEY_IDX, 13))
     )
 
@@ -173,7 +179,7 @@ class TestNl80211(TestCase):
                 ("NL80211_ATTR_IFTYPE", 10),
                 ("NL80211_ATTR_EXT_CAPA", b"\x0b")])]),
         ("NL80211_ATTR_KEY", OrderedDict([
-            ("NL80211_KEY_DEFAULT", 12),
+            ("NL80211_KEY_DEFAULT", True),
             ("NL80211_KEY_IDX", 13)]))])
 
     def test_build_kwargs(self):
@@ -187,7 +193,7 @@ class TestNl80211(TestCase):
                 {"NL80211_ATTR_IFTYPE": 8, "NL80211_ATTR_EXT_CAPA": b"\x09"},
                 {"NL80211_ATTR_IFTYPE": 10, "NL80211_ATTR_EXT_CAPA": b"\x0b"},
             ],
-            key={"NL80211_KEY_DEFAULT": 12, "NL80211_KEY_IDX": 13})
+            key={"NL80211_KEY_DEFAULT": True, "NL80211_KEY_IDX": 13})
 
         # Can't guarantee the order will be preserved on older Pythons
         # https://docs.python.org/3/whatsnew/3.6.html#whatsnew36-pep468
@@ -216,5 +222,22 @@ class TestNl80211(TestCase):
         self.assertEqual(attrs.sta_supported_rates, [5, 6, 7])
         self.assertEqual(attrs.iftype_ext_capa[0].iftype, 8)
         self.assertEqual(attrs.iftype_ext_capa[0].ext_capa, b"\x09")
-        self.assertEqual(attrs.key.default, 12)
+        self.assertEqual(attrs.key.default, True)
         self.assertEqual(attrs.key.idx, 13)
+
+
+class TestNlAttrSchema(TestCase):
+    def test_flag(self):
+        ids = {"ATTR_FOO": 1}
+        schema = NlAttrSchema.from_spec([
+            {
+                "name": "ATTR_FOO",
+                "type": "flag",
+                "python_name": "foo"
+            }
+        ], ids)
+
+        self.assertEqual(schema.build(foo=False), b"")
+        self.assertEqual(schema.build(foo=True), nla_flag(1))
+        self.assertEqual(schema.parse(b"").foo, False)
+        self.assertEqual(schema.parse(nla_flag(1)).foo, True)

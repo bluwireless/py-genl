@@ -17,6 +17,10 @@ except ImportError:
 from .netlink import pad, NetlinkError, parse_generic_attributes
 
 
+class NlAttrOmit(Exception):
+    pass
+
+
 class NlAttrSet(Mapping):
     """
     Concrete instance of a set of netlink attributes
@@ -79,6 +83,8 @@ class NlAttrSchema(NlAttrSchemaBase):
         # netlink attribute ID names (e.g. "ifindex" -> "NL80211_ATTR_IFINDEX")
         self.name_mapping = name_mapping
         self.required_attrs = required_attrs or []
+        self.flag_attrs = [a for a, c in subattr_schemata.items()
+                           if isinstance(c, NlAttrSchemaFlag)]
 
     @classmethod
     def from_spec(cls, spec, ids):
@@ -109,6 +115,10 @@ class NlAttrSchema(NlAttrSchemaBase):
                  signedness
                - "str": Null-terminated ASCII string
                - "bytes": Byte blob
+               - "flag": Empty attribute whose presence or absence alone is
+                 semantically significant. Mapped to ``True`` when present,
+                 ``False`` when absent. Similarly, the attribute is omitted
+                 when building if the provided value is Falsy.
                - "array": Concatenated array of fixed-size
                  sub-elements. "subelem_type" specifies type of those
                  sub-elems.  An example of this in Linux is
@@ -206,7 +216,10 @@ class NlAttrSchema(NlAttrSchemaBase):
         # Now iterate over the known attributes and build the message up
         for name, val in attr_values.items():
             val = attr_values[name]
-            attr_payload = self.subattr_schemata[name].build(val)
+            try:
+                attr_payload = self.subattr_schemata[name].build(val)
+            except NlAttrOmit:
+                continue
 
             attrib_header_fmt = "@HH"
             length = struct.calcsize(attrib_header_fmt) + len(attr_payload)
@@ -257,6 +270,12 @@ class NlAttrSchema(NlAttrSchemaBase):
             raise NetlinkError(
                 "Missing required attributes in parsed message: {}"
                 .format(missing_attrs))
+
+        # Some attributes are "flags"; their absence is semantically
+        # significant.
+        for attr_name in self.flag_attrs:
+            if attr_name not in attr_values:
+                attr_values[attr_name] = False
 
         return NlAttrSet(attr_values, self.name_mapping)
 
@@ -335,6 +354,25 @@ class NlAttrSchemaBytes(NlAttrSchemaBase):
 
     def parse(self, data):
         return data
+
+
+@schema_class
+class NlAttrSchemaFlag(NlAttrSchemaBase):
+    """Schema for an attribute that's present or absent. No payload"""
+    names = ["flag"]
+    size = 0
+
+    def build(self, data):
+        # Data is a boolean. If it's false, we should not include the attribute
+        # at all
+        if not data:
+            raise NlAttrOmit()
+        return b""
+
+    def parse(self, data):
+        # Attribute is present, flag is true. If this attribute is absent, it's
+        # up to the caller to figure out that the flag is false
+        return True
 
 
 class NlAttrSchemaCollection(NlAttrSchemaBase):
