@@ -2,7 +2,7 @@
 
 At [Blu Wireless](https://bluwireless.com/) we needed a tool for doing NL80211
 interactions in Python test code. We couldn't find any libraries that
-facilitates this in a way that leverages the strengths of Python, so we wrote
+facilitate this in a way that leverages the strengths of Python, so we wrote
 something. Most of the original code was specific to Blu Wireless' technology,
 but the generic stuff was pulled out to create this library.
 
