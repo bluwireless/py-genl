@@ -20,7 +20,7 @@ where we define an example schema for NL80211 commands, and
 examples/nl80211_dump.py, which uses that schema to query NL80211 for
 information about a given WiFi adapter.
 
-Works on both Python 2 and 3.
+Works on both Python 2 and 3. Pure Python, no dependencies.
 
 ## Known limitations
 
