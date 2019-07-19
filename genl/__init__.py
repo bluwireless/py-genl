@@ -106,11 +106,10 @@ def lookup_genl_family(family_name):
         response = getfamily_schema.parse(genl_body)
 
         mcast_groups = {}
-        for entry in response["CTRL_ATTR_MCAST_GROUPS"]:
-            group_name = entry["CTRL_ATTR_MCAST_GRP_NAME"].strip()
-            mcast_groups[group_name] = entry["CTRL_ATTR_MCAST_GRP_ID"]
+        for entry in response.mcast_groups:
+            mcast_groups[entry.name.strip()] = entry.id
 
-        return GenlFamilyInfo(response["CTRL_ATTR_FAMILY_ID"], mcast_groups)
+        return GenlFamilyInfo(response.family_id, mcast_groups)
     finally:
         sock.close()
 
