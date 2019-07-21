@@ -447,6 +447,10 @@ nl80211_spec = [
                 "type": "u8",
             },
         ]
-    }
+    },
+    {
+        "name": "NL80211_ATTR_SUPPORTED_IFTYPES",
+        "type": "flags"
+    },
 ]
 nl80211_schema = NlAttrSchema.from_spec(nl80211_spec, nl80211_constants)

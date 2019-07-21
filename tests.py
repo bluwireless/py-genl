@@ -241,3 +241,59 @@ class TestNlAttrSchema(TestCase):
         self.assertEqual(schema.build(foo=True), nla_flag(1))
         self.assertEqual(schema.parse(b"").foo, False)
         self.assertEqual(schema.parse(nla_flag(1)).foo, True)
+
+    def test_set_of_flags(self):
+        ids = {
+            "ATTR_FOO": 1,
+            "FOO_FLAG_1": 1, "FOO_FLAG_2": 2, "FOO_SOMETHING_ELSE": 3
+        }
+        schema = NlAttrSchema.from_spec([
+            {
+                "name": "ATTR_FOO",
+                "python_name": "foo",
+                "type": [
+                    {
+                        "name": "FOO_FLAG_1",
+                        "type": "flag"
+                    },
+                    {
+                        "name": "FOO_FLAG_2",
+                        "type": "flag"
+                    },
+                    {
+                        "name": "FOO_SOMETHING_ELSE",
+                        "type": "u32",
+                    }
+                ]
+            }
+        ], ids)
+
+        attrs = {
+            "ATTR_FOO": {
+                "FOO_FLAG_1": True,
+                "FOO_FLAG_2": False
+            }
+        }
+
+        buf = nla(ids["ATTR_FOO"], nla_flag(ids["FOO_FLAG_1"]))
+        assert_bufs_equal(schema.build(attrs), buf)
+        info = schema.parse(buf)
+        self.assertEqual(info.foo.flag_1, True)
+        self.assertEqual(info.foo.flag_2, False)
+
+    def test_flags(self):
+        ids = {"ATTR_FOO": 1}
+        schema = NlAttrSchema.from_spec([
+            {
+                "name": "ATTR_FOO",
+                "type": "flags",
+                "python_name": "foo"
+            }
+        ], ids)
+
+        self.assertEqual(
+            schema.build(foo=[1, 2]),
+            nla(ids["ATTR_FOO"], nla_flag(1) + nla_flag(2)))
+        self.assertEqual(
+            schema.parse(nla(ids["ATTR_FOO"], nla_flag(2) + nla_flag(3))).foo,
+            [2, 3])

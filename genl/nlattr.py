@@ -124,7 +124,16 @@ class NlAttrSchema(NlAttrSchemaBase):
                - "flag": Empty attribute whose presence or absence alone is
                  semantically significant. Mapped to ``True`` when present,
                  ``False`` when absent. Similarly, the attribute is omitted
-                 when building if the provided value is Falsy.
+                 when building if the provided value is Falsy. An example in
+                 Linux is NL80211_KEY_DEFAULT, which is present in the content
+                 of NL80211_ATTR_KEY iff the represented key is the default.
+               - "flags": Nested attribute containing a list of flag
+                 attributes. While "flag" maps to individual True and False
+                 values, "flags" just maps to the list of flags that were
+                 present. NL80211_ATTR_SUPPORED_IFTYPES is an attribute in
+                 Linux that lends itself to this type, although if the author
+                 preferred, it could also be interpreted as a set of
+                 individual "flag" attributes.
                - "array": Concatenated array of fixed-size
                  sub-elements. "subelem_type" specifies type of those
                  sub-elems.  An example of this in Linux is
@@ -376,6 +385,20 @@ class NlAttrSchemaFlag(NlAttrSchemaBase):
         # Attribute is present, flag is true. If this attribute is absent, it's
         # up to the caller to figure out that the flag is false
         return True
+
+
+@schema_class
+class NlAttrSchemaFlagList(NlAttrSchemaBase):
+    """Schema for an attribute that contains a set of flag sub-attributes"""
+    names = ["flags"]
+
+    def build(self, data):
+        # Data is a set of integer flags which will become attribute IDs
+        return b"".join(build_nlattr(attr_id=f, payload=b"") for f in data)
+
+    def parse(self, data):
+        # Just return a list of the attribute IDs
+        return list(a.atype for a in parse_generic_attributes(data))
 
 
 class NlAttrSchemaCollection(NlAttrSchemaBase):
