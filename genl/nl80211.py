@@ -314,9 +314,47 @@ nl80211_constants = {
     "NL80211_IFACE_COMB_RADAR_DETECT_REGIONS": 6,
     "NL80211_IFACE_COMB_BI_MIN_GCD": 7,
 
-
     "NL80211_IFACE_LIMIT_MAX": 1,
     "NL80211_IFACE_LIMIT_TYPES": 2,
+
+    "NL80211_BAND_ATTR_FREQS": 1,
+    "NL80211_BAND_ATTR_RATES": 2,
+    "NL80211_BAND_ATTR_HT_MCS_SET": 3,
+    "NL80211_BAND_ATTR_HT_CAPA": 4,
+    "NL80211_BAND_ATTR_HT_AMPDU_FACTOR": 5,
+    "NL80211_BAND_ATTR_HT_AMPDU_DENSITY": 6,
+    "NL80211_BAND_ATTR_VHT_MCS_SET": 7,
+    "NL80211_BAND_ATTR_VHT_CAPA": 8,
+    "NL80211_BAND_ATTR_IFTYPE_DATA": 9,
+
+    "NL80211_BAND_IFTYPE_ATTR_IFTYPES": 1,
+    "NL80211_BAND_IFTYPE_ATTR_HE_CAP_MAC": 2,
+    "NL80211_BAND_IFTYPE_ATTR_HE_CAP_PHY": 3,
+    "NL80211_BAND_IFTYPE_ATTR_HE_CAP_MCS_SET": 4,
+    "NL80211_BAND_IFTYPE_ATTR_HE_CAP_PPE": 5,
+
+    "NL80211_BITRATE_ATTR_RATE": 1,
+    "NL80211_BITRATE_ATTR_2GHZ_SHORTPREAMBLE": 2,
+
+
+    "NL80211_FREQUENCY_ATTR_FREQ": 1,
+    "NL80211_FREQUENCY_ATTR_DISABLED": 2,
+    "NL80211_FREQUENCY_ATTR_NO_IR": 3,
+    "__NL80211_FREQUENCY_ATTR_NO_IBSS": 4,
+    "NL80211_FREQUENCY_ATTR_RADAR": 5,
+    "NL80211_FREQUENCY_ATTR_MAX_TX_POWER": 6,
+    "NL80211_FREQUENCY_ATTR_DFS_STATE": 7,
+    "NL80211_FREQUENCY_ATTR_DFS_TIME": 8,
+    "NL80211_FREQUENCY_ATTR_NO_HT40_MINUS": 9,
+    "NL80211_FREQUENCY_ATTR_NO_HT40_PLUS": 10,
+    "NL80211_FREQUENCY_ATTR_NO_80MHZ": 11,
+    "NL80211_FREQUENCY_ATTR_NO_160MHZ": 12,
+    "NL80211_FREQUENCY_ATTR_DFS_CAC_TIME": 13,
+    "NL80211_FREQUENCY_ATTR_INDOOR_ONLY": 14,
+    "NL80211_FREQUENCY_ATTR_IR_CONCURRENT": 15,
+    "NL80211_FREQUENCY_ATTR_NO_20MHZ": 16,
+    "NL80211_FREQUENCY_ATTR_NO_10MHZ": 17,
+    "NL80211_FREQUENCY_ATTR_WMM": 18,
 }
 globals().update(nl80211_constants)
 
@@ -451,6 +489,215 @@ nl80211_spec = [
     {
         "name": "NL80211_ATTR_SUPPORTED_IFTYPES",
         "type": "flags"
+    },
+    {
+        "name": "NL80211_ATTR_WIPHY_RETRY_LONG",
+        "type": "u8"
+    },
+    {
+        "name": "NL80211_ATTR_WIPHY_FRAG_THRESHOLD",
+        "type": "u32"
+    },
+    {
+        "name": "NL80211_ATTR_WIPHY_RTS_THRESHOLD",
+        "type": "u32"
+    },
+    {
+        "name": "NL80211_ATTR_WIPHY_COVERAGE_CLASS",
+        "type": "u8"
+    },
+    {
+        "name": "NL80211_ATTR_MAX_NUM_SCAN_SSIDS",
+        "type": "u8"
+    },
+    {
+        "name": "NL80211_ATTR_MAX_SCAN_IE_LEN",
+        "type": "u16"
+    },
+    {
+        "name": "NL80211_ATTR_MAX_MATCH_SETS",
+        "type": "u8"
+    },
+    {
+        "name": "NL80211_ATTR_MAX_SCAN_PLAN_INTERVAL",
+        "type": "u32"
+    },
+    {
+        "name": "NL80211_ATTR_MAX_SCAN_PLAN_ITERATIONS",
+        "type": "u32"
+    },
+    {
+        "name": "NL80211_ATTR_SUPPORT_IBSS_RSN",
+        "type": "flag"
+    },
+    {
+        "name": "NL80211_ATTR_SUPPORT_AP_UAPSD",
+        "type": "flag"
+    },
+    {
+        "name": "NL80211_ATTR_TDLS_SUPPORT",
+        "type": "flag"
+    },
+    {
+        "name": "NL80211_ATTR_MAX_NUM_PMKIDS",
+        "type": "u8"
+    },
+    {
+        "name": "NL80211_ATTR_WIPHY_ANTENNA_AVAIL_TX",
+        "type": "u32"
+    },
+    {
+        "name": "NL80211_ATTR_WIPHY_BANDS",
+        "type": "list",
+        "subelem_type": [
+            {
+                "name": "NL80211_BAND_ATTR_FREQS",
+                "type": "list",
+                "subelem_type": [
+                    {
+                        "name": "NL80211_FREQUENCY_ATTR_FREQ",
+                        "type": "u32"
+                    },
+                    {
+                        "name": "NL80211_FREQUENCY_ATTR_DISABLED",
+                        "type": "flag"
+                    },
+                    {
+                        "name": "NL80211_FREQUENCY_ATTR_NO_IR",
+                        "type": "flag"
+                    },
+                    {
+                        "name": "NL80211_FREQUENCY_ATTR_RADAR",
+                        "type": "flag"
+                    },
+                    {
+                        "name": "NL80211_FREQUENCY_ATTR_MAX_TX_POWER",
+                        "type": "u32"
+                    },
+                    {
+                        "name": "NL80211_FREQUENCY_ATTR_DFS_STATE",
+                        "type": "u32"
+                    },
+                    {
+                        "name": "NL80211_FREQUENCY_ATTR_DFS_TIME",
+                        "type": "u32"
+                    },
+                    {
+                        "name": "NL80211_FREQUENCY_ATTR_NO_HT40_MINUS",
+                        "type": "flag"
+                    },
+                    {
+                        "name": "NL80211_FREQUENCY_ATTR_NO_HT40_PLUS",
+                        "type": "flag"
+                    },
+                    {
+                        "name": "NL80211_FREQUENCY_ATTR_NO_80MHZ",
+                        "type": "flag"
+                    },
+                    {
+                        "name": "NL80211_FREQUENCY_ATTR_NO_160MHZ",
+                        "type": "flag"
+                    },
+                    {
+                        "name": "NL80211_FREQUENCY_ATTR_DFS_CAC_TIME",
+                        "type": "u32"
+                    },
+                    {
+                        "name": "NL80211_FREQUENCY_ATTR_INDOOR_ONLY",
+                        "type": "flag"
+                    },
+                    {
+                        "name": "NL80211_FREQUENCY_ATTR_IR_CONCURRENT",
+                        "type": "flag"
+                    },
+                    {
+                        "name": "NL80211_FREQUENCY_ATTR_NO_20MHZ",
+                        "type": "flag"
+                    },
+                    {
+                        "name": "NL80211_FREQUENCY_ATTR_NO_10MHZ",
+                        "type": "flag"
+                    },
+                    {
+                        "name": "NL80211_FREQUENCY_ATTR_WMM",
+                        "type": "u32"
+                    },
+                ]
+            },
+            {
+                "name": "NL80211_BAND_ATTR_HT_MCS_SET",
+                "type": "bytes"  # 16-byte structure
+            },
+            {
+                "name": "NL80211_BAND_ATTR_HT_CAPA",
+                "type": "u16"
+            },
+            {
+                "name": "NL80211_BAND_ATTR_HT_AMPDU_FACTOR",
+                "type": "u8"
+            },
+            {
+                "name": "NL80211_BAND_ATTR_HT_AMPDU_DENSITY",
+                "type": "u8"
+            },
+            {
+                "name": "NL80211_BAND_ATTR_VHT_MCS_SET",
+                "type": "bytes"  # 32-byte structure
+            },
+            {
+                "name": "NL80211_BAND_ATTR_VHT_CAPA",
+                "type": "bytes"  # From 802.11 IE structure
+            },
+            {
+                "name": "NL80211_BAND_ATTR_IFTYPE_DATA",
+                "type": "list",
+                "subelem_type": [
+                    {
+                        "name": "NL80211_BAND_IFTYPE_ATTR_IFTYPES",
+                        "type": "flags"
+                    },
+                    {
+                        "name": "NL80211_BAND_IFTYPE_ATTR_HE_CAP_MAC",
+                        "type": "bytes"
+                    },
+                    {
+                        "name": "NL80211_BAND_IFTYPE_ATTR_HE_CAP_PHY",
+                        "type": "bytes"
+                    },
+                    {
+                        "name": "NL80211_BAND_IFTYPE_ATTR_HE_CAP_MCS_SET",
+                        "type": "bytes"
+                    },
+                    {
+                        "name": "NL80211_BAND_IFTYPE_ATTR_HE_CAP_PPE",
+                        "type": "bytes"
+                    },
+                ]
+            },
+            {
+                "name": "NL80211_BAND_ATTR_RATES",
+                # TODO these start from 0!
+                "type": "list",
+                "subelem_type": [
+                    {
+                        "name": "NL80211_BITRATE_ATTR_RATE",
+                        "type": "u32"
+                    },
+                    {
+                        "name": "NL80211_BITRATE_ATTR_2GHZ_SHORTPREAMBLE",
+                        "type": "flag"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "NL80211_ATTR_MAX_REMAIN_ON_CHANNEL_DURATION",
+        "type": "u32",
+    },
+    {
+        "name": "NL80211_ATTR_OFFCHANNEL_TX_OK",
+        "type": "flag",
     },
 ]
 nl80211_schema = NlAttrSchema.from_spec(nl80211_spec, nl80211_constants)

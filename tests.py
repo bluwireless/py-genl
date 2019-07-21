@@ -212,7 +212,8 @@ class TestNl80211(TestCase):
         attrs = nl80211_schema.parse(self.test_buf)
 
         # Check accessing attributes dict-style
-        self.assertEqual(dict(attrs), dict(self.test_attrs))
+        for key, val in self.test_attrs.items():
+            self.assertEqual(attrs[key], val)
 
         # Check access attributes as python attributes
         self.assertEqual(attrs.wiphy_retry_short, 1)
