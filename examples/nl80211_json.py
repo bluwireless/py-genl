@@ -17,9 +17,8 @@ The schema in the library is incomplete, so depending on your system and the
 command you run, you will probably get warnings about unknown attributes
 appearing in the response from the kernel.
 
-Try a command like this (find index of your wireless interface using "ip link
-show"):
-pipenv run nl80211_json.py NL80211_CMD_GET_INTERFACE '{"NL80211_ATTR_IFINDEX": 3}'
+Try a command like this:
+pipenv run nl80211_json.py NL80211_CMD_GET_WIPHY '{"NL80211_ATTR_WIPHY": 0}'
 """
 
 import json
