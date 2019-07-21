@@ -6,7 +6,7 @@ name = "pypi"
 [dev-packages]
 
 [packages]
-"a571e24" = {path = "./py-genl"}
+"a571e24" = {path = "./py-genl", editable = true}
 
 [requires]
 python_version = "3.6"

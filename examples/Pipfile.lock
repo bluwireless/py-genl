@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "bc7c45ac186d8db8bebec45a85671e84e633e03c0ac1745857511352b64cb11a"
+            "sha256": "515c8814b914acb2c68e35aba8881c5f8d009ab829a656df13df81933d3df044"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -17,6 +17,7 @@
     },
     "default": {
         "a571e24": {
+            "editable": true,
             "path": "./py-genl"
         }
     },
