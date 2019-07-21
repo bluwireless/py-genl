@@ -21,6 +21,12 @@ class NlAttrOmit(Exception):
     pass
 
 
+def build_nlattr(attr_id, payload):
+    fmt = "=HH"
+    length = struct.calcsize(fmt) + len(payload)
+    return pad(struct.pack(fmt, length, attr_id) + payload)
+
+
 class NlAttrSet(Mapping):
     """
     Concrete instance of a set of netlink attributes
@@ -221,11 +227,8 @@ class NlAttrSchema(NlAttrSchemaBase):
             except NlAttrOmit:
                 continue
 
-            attrib_header_fmt = "@HH"
-            length = struct.calcsize(attrib_header_fmt) + len(attr_payload)
             attr_id = self.ids[name]
-            payload += pad(struct.pack(attrib_header_fmt, length, attr_id) +
-                           attr_payload)
+            payload += build_nlattr(attr_id, attr_payload)
 
         return payload
 
@@ -414,11 +417,8 @@ class NlAttrSchemaList(NlAttrSchemaCollection):
         for i, val in enumerate(attr_values):
             attr_payload = self.subelem_schema.build(val)
 
-            attrib_header_fmt = "@HH"
-            length = struct.calcsize(attrib_header_fmt) + len(attr_payload)
             attr_id = i + 1
-            payload += pad(struct.pack(attrib_header_fmt, length, attr_id) +
-                           attr_payload)
+            payload += build_nlattr(attr_id, attr_payload)
 
         return payload
 
