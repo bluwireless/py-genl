@@ -29,3 +29,35 @@ Works on both Python 2 and 3. Pure Python, no dependencies.
 
 - No HTML documentation. There are docstrings in the code, though. The most
   interesting bit is `nlattr.NlAttrSchema`.
+
+## Setup
+
+Can by installed with usual Python package installation procedures. The
+simplest way is usually with [Pipenv](https://docs.pipenv.org/en/latest/):
+
+- `sudo apt install python-pip  # Or equivalent for your OS`
+- `pip install --user pipenv`
+- `export PIPENV_VENV_IN_PROJECT=1  # Explained below`
+- `cd <root directory of your application source code>`
+- `pipenv install <root directory of this repository>`
+
+Note that your application may need to run as root. The above procedure 
+installs the library in a virtualenv, which root will not by default have 
+access to. One way around this is to run your application via a `sudo`
+command that passes your user's Python environment into the `sudo` 
+environment:
+
+- `pipenv shell`
+- `sudo --preserve-env $(which python) <your app's entrypoint>`
+
+The reason we exported `PIPENV_VENV_IN_PROJECT=1` above, then, 
+is to ensure that the root user has read access to your virtualenv files.
+
+TODO: A proper solution would probably be to translate this Python package
+into a Linux distro package (`.deb`/`.rpm` etc) and install it system-wide.
+
+## Running tests
+
+- `pip install --user tox`
+- `cd <root directory of this repository>`
+- `tox`
