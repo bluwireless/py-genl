@@ -54,8 +54,6 @@ The reason we exported `PIPENV_VENV_IN_PROJECT=1` above, then,
 helps you ensure that the root user has read permission on your
 virtualenv files.     
 
-Note that your application may need to run as root. The above procedure installs the library in a virtualenv, which root will not by default have access to. One way around this is to run your application via a sudo command that passes your user's Python environment into the sudo environment:
-
 TODO: A proper solution would probably be to translate this Python package
 into a Linux distro package (`.deb`/`.rpm` etc) and install it system-wide.
 
