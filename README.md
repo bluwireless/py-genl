@@ -2,7 +2,7 @@
 
 At [Blu Wireless](https://bluwireless.com/) we needed a tool for doing NL80211
 interactions in Python test code. We couldn't find any libraries that
-facilitate this in a way that leverages the strengths of Python, so we wrote
+facilitate this in a way that leverages the strengths of Python, so we wrotedirectory
 something. Most of the original code was specific to Blu Wireless' technology,
 but the generic stuff was pulled out to create this library.
 
@@ -33,13 +33,15 @@ Works on both Python 2 and 3. Pure Python, no dependencies.
 ## Setup
 
 Can by installed with usual Python package installation procedures. The
-simplest way is usually with [Pipenv](https://docs.pipenv.org/en/latest/):
+cleanest way is usually with [Pipenv](https://docs.pipenv.org/en/latest/):
 
 - `sudo apt install python-pip  # Or equivalent for your OS`
 - `pip install --user pipenv`
 - `export PIPENV_VENV_IN_PROJECT=1  # Explained below`
 - `cd <root directory of your application source code>`
 - `pipenv install <root directory of this repository>`
+
+#### If your application needs to be privileged
 
 There are some complications if your application needs to run as root:
 The above procedure installs the library in a virtualenv, which root 
@@ -54,8 +56,12 @@ The reason we exported `PIPENV_VENV_IN_PROJECT=1` above, then,
 helps you ensure that the root user has read permission on your
 virtualenv files.     
 
-TODO: A proper solution would probably be to translate this Python package
-into a Linux distro package (`.deb`/`.rpm` etc) and install it system-wide.
+If you are okay with modifying the target system's global 
+configuration, a simpler alternative is to forego virtualenvs 
+and install the library globally:
+
+- `cd <root directory of this repository>`
+- `sudo pip3 install .  # (Assuming you will be using Python 3, else use 'pip')
 
 ## Running tests
 
