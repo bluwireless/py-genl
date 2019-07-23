@@ -61,7 +61,7 @@ configuration, a simpler alternative is to forego virtualenvs
 and install the library globally:
 
 - `cd <root directory of this repository>`
-- `sudo pip3 install .  # (Assuming you will be using Python 3, else use 'pip')
+- `sudo pip3 install .  # (Assuming you will be using Python 3, else use 'pip')`
 
 ## Running tests
 
