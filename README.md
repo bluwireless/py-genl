@@ -1,10 +1,9 @@
 # Python library for Generic Netlink
 
-At [Blu Wireless](https://bluwireless.com/) we needed a tool for doing NL80211
-interactions in Python test code. We couldn't find any libraries that
-facilitate this in a way that leverages the strengths of Python, so we wrotedirectory
-something. Most of the original code was specific to Blu Wireless' technology,
-but the generic stuff was pulled out to create this library.
+This is a library for doing Gener Netlink interactions in a way that leverages
+the strengths of high-level Python. It originally existed as an internal tool
+at [Blu Wireless](https://bluwireless.com/) for NL80211 wireless device 
+configuration, then the generic components were extracted to form this library.
 
 Netlink and Generic Netlink themselves aren't very complicated, but the
 attribute system can result in reams of boilerplate code. The aim of this
